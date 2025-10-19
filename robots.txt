@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://votre-site.netlify.app/sitemap.xml
+
+# Fichiers à ne pas indexer
+Disallow: /cartes/
+Disallow: /photos/
+Disallow: /graphes/

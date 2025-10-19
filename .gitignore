@@ -1,0 +1,43 @@
+# Fichiers sensibles
+.env
+.env.local
+.env.production
+
+# Clés API (si vous les mettez dans des fichiers séparés)
+config.js
+api-keys.js
+config.local.js
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dossiers temporaires
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node modules (si vous ajoutez des dépendances)
+node_modules/
+
+# Build files
+dist/
+build/
+
+# Fichiers système Windows
+desktop.ini
+
+# Fichiers de sauvegarde
+*.bak
+*.tmp
+*~
+
+# Fichiers de cache
+.cache/
+.temp/

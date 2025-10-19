@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>REAL VIZUALISATION — Zone Côtière de POINTE-Noire</title>
+<meta name="description" content="REAL VIZUALISATION — Cartographie, solutions, mangroves & résilience côtière. Conçu par Solution Express — MOUTSOU Jaurès." />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="header" role="banner">
+  <div class="brand">
+    <div class="logo-box" aria-hidden="true" title="REAL VIZUALISATION - Outil de résilience côtière">
+      <svg width="104" height="58" viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Real Vizualisation">
+        <defs>
+          <linearGradient id="lg1" x1="0" x2="1"><stop offset="0" stop-color="#7ef0ff"/><stop offset="1" stop-color="#007a98"/></linearGradient>
+          <radialGradient id="rg1" cx="40%" cy="30%"><stop offset="0" stop-color="#cfeffb"/><stop offset="1" stop-color="#043e55"/></radialGradient>
+          <filter id="gblur"><feGaussianBlur stdDeviation="2.5"/></filter>
+        </defs>
+        <g transform="translate(0,20)">
+          <path d="M0 84 C48 20, 140 22, 196 68 C248 106, 296 82, 320 92 L320 160 L0 160 Z" fill="#003a4a"/>
+          <path d="M36 76 C80 48, 144 46, 196 66" stroke="url(#lg1)" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.9"/>
+        </g>
+        <g transform="translate(92,24)">
+          <ellipse cx="64" cy="70" rx="46" ry="26" fill="#e9fbff" opacity="0.96"/>
+          <ellipse cx="64" cy="70" rx="20" ry="11" fill="#003a4a"/>
+          <circle cx="64" cy="70" r="6" fill="#7ef0ff"/>
+          <circle cx="54" cy="62" r="2" fill="#cfeffb" opacity="0.9"/>
+          <circle cx="64" cy="70" r="36" fill="none" stroke="url(#lg1)" stroke-width="1.6" opacity="0.18">
+            <animate attributeName="opacity" values="0.08;0.25;0.08" dur="4s" repeatCount="indefinite"/>
+            <animateTransform attributeName="transform" type="rotate" values="0 64 70;10 64 70;0 64 70" dur="6s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+        <text x="8" y="22" fill="#e9fbff" font-size="20" font-weight="700" font-family="Inter">REAL</text>
+        <text x="8" y="42" fill="#cfeffb" font-size="12" font-weight="600" font-family="Inter">VIZUALISATION</text>
+      </svg>
+    </div>
+    <div class="title">
+      <h1 class="ocean-title">REAL VIZUALISATION</h1>
+      <p class="ocean-subtitle">Solution Express — MOUTSOU Jaurès • Zone Côtière de POINTE-Noire</p>
+    </div>
+  </div>
+
+  <nav class="nav" role="navigation" aria-label="Navigation principale">
+    <a href="#accueil" title="Aller à la section d'introduction">Accueil</a>
+    <a href="#cartes" title="Voir les cartes d'étude (1 à 18)">Cartes</a>
+    <a href="#graphes" title="Voir les graphes climatiques (ombrothermiques)">Graphes</a>
+    <a href="#photos" title="Voir les photos de terrain (observations)">Photos</a>
+    <a href="#carte-interactive" title="Accéder à la carte interactive et aux couches prédictives">Carte</a>
+    <a href="#alertes" title="Détails du Système d'Alerte Précoce (SAP)">Alertes</a>
+    <a href="#partage-communaute" title="S'enregistrer aux alertes et partager des documents">Partage</a>
+    <a href="#dialogue" title="Discuter avec l'assistant IA Expert">Dialogue</a>
+  </nav>
+</header>
+
+<div class="wrapper" role="main">
+
+  <main>
+
+    <!-- CARTE INTERACTIVE VISIBLE (SEUL ÉLÉMENT NON CACHÉ) - PLUS GRANDE -->
+    <div class="card" id="carte-interactive">
+      <h3 class="h2">Carte interactive — Zones Prédictives 2037 🗺️</h3>
+      <div id="map" style="margin-top:10px"></div>
+      <div class="map-legend">
+        <span class="legend-item legend-exposed" title="Zone d'érosion la plus active / Zone d'évacuation prioritaire (SAP ROUGE)">Zone Exposée/Alerte (SAP)</span>
+        <span class="legend-item legend-unconstructible" title="Limite réglementaire issue de la modélisation (Aléa Très Fort 2037)">Zone Inconstructible (2037)</span>
+        <span class="legend-item legend-reforest" title="Zone prioritaire pour les solutions fondées sur la nature (Mangroves)">Zone à Reboiser (Mangrove)</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="toggle-coastline" class="btn ghost" style="background:#005a65; border-color:#005a65; color:#dffaff;" title="Comparer la côte actuelle (2024) avec la côte passée (2000)">Voir Trait de Côte Historique (2000)</button>
+        <button id="fit-extent" class="btn ghost" title="Centrer la carte sur le périmètre d'étude">Zoom périmètre</button>
+      </div>
+      <div style="margin-top:8px" class="small">Centre : -4.78, 11.86 — Périmètre : Zone Côtière de POINTE-Noire</div>
+    </div>
+
+    <!-- TOUT LE RESTE DANS DES ACCORDÉONS -->
+    <details id="accueil" class="card" aria-labelledby="acc-title">
+      <summary><h2 id="acc-title" class="h2" style="display:inline">Accueil & Contexte du Projet</h2></summary>
+      <div style="padding-top:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+                <h3 style="color:#fff; font-size: 18px; line-height: 1.3; margin-bottom: 8px;"> <!-- RÉDUIT -->
+                  <span style="color:var(--danger-red); font-weight:700">Risque d'érosion / inondation pour certaines zones.</span> Inscrivez-vous aux alertes **SMS (MTN & Airtel)** - Vous pouvez vous **désabonner à tout moment**.
+                </h3>
+            </div>
+            <div class="small" style="min-width: 140px; text-align: right; color: var(--accent2);">Cartographie Prédictive • Outil de Simulation • Assistant IA Vocal</div>
+        </div>
+        
+        <p style="margin-top:0px; font-size:14px; color:var(--muted);"> <!-- RÉDUIT -->
+            **REAL VIZUALISATION** propose le **Système d'Alerte Précoce (SAP)** dynamique pour les risques immédiats, la **Planification du Risque (2037)** (Zone Inconstructible) et la **Restauration Écosystémique** (Mangroves) comme solution de résilience. **<a href="#partage-communaute" style="font-weight: 700;">Inscrivez-vous dès maintenant pour les alertes SMS.</a>**
+        </p>
+        
+        <details>
+          <summary title="Afficher la méthodologie, les solutions et le contexte">Détails de la méthodologie et des solutions (CLIQUEZ)</summary>
+          <div style="padding:14px 0 0 0;">
+            <h4 class="h2" style="font-size:15px; margin-top:0px; margin-bottom:6px; color:var(--accent)">DÉTAILS DES SOLUTIONS CLÉS</h4> <!-- RÉDUIT -->
+            <p class="small">
+              L'approche est double : Action (Mangroves) et Planification (2037).
+              <ul class="small" style="margin-top:4px; padding-left:20px;">
+                <li>**Restauration Écosystémique :** Le **reboisement des mangroves** (couche verte) est la solution douce. Utilisez l'**Outil de Simulation (à droite)** pour calculer l'atténuation d'érosion.</li>
+                <li>**Planification Urbaine du Risque :** La **Zone Inconstructible (2037)** (couche grise) est la limite réglementaire issue de la modélisation prédictive (Cartes 13-16).</li>
+                <li>**Alerte Active :** Le **Système d'Alerte Précoce (SAP)** (couche rouge/orange) est dynamique et surligne la Zone d'évacuation immédiate en cas de danger critique (érosion/inondation).</li>
+              </ul>
+            </p>
+            <hr style="border-color:rgba(255,255,255,0.05); margin:14px 0"/>
+            <p class="small">
+              **Contexte de l'Urgence :** L'érosion littorale de POINTE-Noire, en particulier le Cirque d'Érosion, s'accélère. Nos graphes climatiques démontrent une forte corrélation entre les cycles de précipitations et les épisodes érosifs/inondations côtières.
+            </p>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <details id="alertes-centrale" class="big-alert-panel" aria-labelledby="alert-title">
+      <summary><h2 id="alert-title">ALERTE D'ÉROSION CÔTIÈRE & INONDATION</h2></summary>
+      <div style="padding-top:14px;">
+        <div id="central-alert-status" role="alert" aria-live="assertive">
+            ⚠️ **Niveau d'Alerte : MODÉRÉ**
+            <span class="kicker-detail">Érosion active. Suivi des grandes marées en cours.</span>
+        </div>
+        <p id="central-sms-info" style="font-style: italic; color: #a0f8ff;">
+            Inscrivez-vous ci-dessous pour l'alerte SMS **URGENTE** par Airtel ou MTN.
+        </p>
+      </div>
+    </details>
+
+    <details id="cartes" class="card">
+      <summary><h2 class="h2" style="display:inline">Cartes organisées (vignettes dynamiques)</h2></summary>
+      <div style="padding-top:14px;">
+        <p class="small">Accédez aux données scientifiques : Cartes de tendance (11-12) et Cartes prédictives (13-16). **Cliquez sur "Activer la couche" pour ajouter les données à la carte interactive.**</p>
+        
+        <div style="margin-top:10px">
+          <strong style="font-size:13px;">Cartes 1–4 — Zone d'étude</strong> <!-- RÉDUIT -->
+          <div id="group-1" class="gallery"></div>
+        </div>
+        <div style="margin-top:12px">
+          <strong style="font-size:13px;">Cartes 5–9 — Cirque d'érosion</strong> <!-- RÉDUIT -->
+          <div id="group-2" class="gallery"></div>
+        </div>
+        <div style="margin-top:12px">
+          <strong style="font-size:13px;">Cartes 11–12 — Dynamique de l'érosion</strong> <!-- RÉDUIT -->
+          <div id="group-4" class="gallery"></div>
+        </div>
+        <div style="margin-top:12px">
+          <strong style="font-size:13px;">Cartes 15–16 — Modélisation prédictive (2037)</strong> <!-- RÉDUIT -->
+          <div id="group-6" class="gallery"></div>
+        </div>
+      </div>
+    </details>
+
+    <details id="partage-communaute" class="card" style="margin-top:14px">
+      <summary><h2 class="h2" style="display:inline">ABONNEMENT ALERTES SMS & Contribution Communautaire</h2></summary>
+      <div style="padding-top:14px;">
+        <div style="margin-top:10px">
+          <h3 style="margin:6px 0; font-size:15px;">S'abonner à l'Alerte SMS (Airtel/MTN)</h3> <!-- RÉDUIT -->
+          <p class="small" style="color:var(--danger-red); font-weight:700;">Recevez l'alerte ROUGE en cas de Pleine Mer Critique ou d'Inondation ! Vous pouvez vous désabonner à tout moment via l'application mobile ou par simple réponse 'STOP'.</p>
+          <form id="register-form" style="margin-top:8px">
+            <div class="form-group"><label for="reg-nom">Nom & Prénom</label><input type="text" id="reg-nom" required/></div>
+            
+            <div class="form-row">
+              <div class="form-group" style="flex:2"><label for="reg-phone">Numéro de Téléphone (SMS)</label><input type="tel" id="reg-phone" pattern="[0-9]{8,10}" required title="Veuillez entrer un numéro de téléphone valide (8 à 10 chiffres)."/></div>
+              <div class="form-group" style="flex:1"><label for="reg-operator">Opérateur</label>
+                <select id="reg-operator" required>
+                  <option value="">Choisir</option>
+                  <option value="airtel">Airtel Congo</option>
+                  <option value="mtn">MTN Congo</option>
+                  <option value="autre">Autre</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group"><label for="reg-email">Email (Optionnel)</label><input type="email" id="reg-email" placeholder="Pour les rapports détaillés"/></div>
+            <button type="submit" class="btn" style="width:100%" title="Recevoir les alertes SAP (SMS & Email)">S'enregistrer aux alertes critiques</button>
+            <div id="reg-message" class="success-box" style="display:none; margin-top:10px; background:#007a98; color:#eaffff;">Merci pour votre engagement. Vos données sont sécurisées.</div>
+          </form>
+        </div>
+
+        <div style="margin-top:18px">
+          <h3 style="margin:6px 0; font-size:15px;">Importation de Documents (Contribution)</h3> <!-- RÉDUIT -->
+          <p class="small">Partagez vos données de terrain (photos datées, rapports). Votre participation enrichit la science.</p>
+          <form id="import-form" style="margin-top:8px">
+            <div class="form-group"><label for="doc-file">Sélectionner le Fichier (PDF, DOCX, Photo)</label><input type="file" id="doc-file" accept=".pdf, .txt, .docx, .xlsx, .doc, .xls, .jpg, .png, .jpeg"/></div>
+            <button type="submit" class="btn ghost" style="width:100%" title="Télécharger un document de contribution">Importer le document</button>
+            <div id="import-message" class="success-box" style="display:none; margin-top:10px; background:#007a98; color:#eaffff;">Document envoyé pour modération.</div>
+          </form>
+        </div>
+      </div>
+    </details>
+
+    <details id="dialogue" class="card chat-panel" style="margin-top:14px">
+      <summary><h2 class="h2" style="display:inline">Dialogue & Expertise — Assistant Real Viz</h2></summary>
+      <div style="padding-top:14px;">
+        <div class="chat-header">
+          <div>
+            <strong style="font-size:14px;">Assistant Real Viz</strong> <!-- RÉDUIT -->
+            <div class="small-muted">Choisis un profil, pose ta question — mémoire courte (3 tours).</div>
+          </div>
+          <div>
+            <select id="role-select" aria-label="Sélection du rôle" title="Adapter les réponses en fonction du rôle ciblé" style="padding:8px;border-radius:8px;background:transparent;color:#eafcff;border:1px solid rgba(255,255,255,0.04); font-size:12px;"> <!-- RÉDUIT -->
+              <option value="general">Général</option>
+              <option value="jury">Jury (Évaluation)</option>
+              <option value="experts">Experts (Technique)</option>
+              <option value="communes">Collectivités (Gouvernance)</option>
+              <option value="populations">Populations (Impacts)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="chat-body">
+          <div id="chat-log" class="chat-log" aria-live="polite"></div>
+
+          <div class="chat-input">
+            <input id="chat-input" placeholder="Ex : Corrélation entre précipitations et érosion littoral ?" aria-label="Message" />
+            <button id="chat-voice" class="btn ghost" style="padding:10px; font-size:16px;" title="Question vocale (Simulation)">🎤</button>
+            <button id="chat-send" class="btn" title="Envoyer le message à l'assistant">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </details>
+
+  </main>
+
+  <aside>
+
+    <div class="card" id="simulation-tool" style="margin-top:12px">
+      <h3 class="h2" style="font-size:15px; margin-bottom:10px; color:var(--accent2)">OUTIL UNIQUE : SIMULATION D'ATTÉNUATION 🌿</h3> <!-- RÉDUIT -->
+      <p class="small">Testez l'impact quantifié du reboisement des mangroves pour le recul du littoral.</p>
+      <form id="mangrove-sim-form" style="margin-top:10px">
+        <div class="form-group">
+          <label for="sim-surface">Surface reboisée (Hectares)</label>
+          <input type="number" id="sim-surface" value="1.5" min="0.1" step="0.1" required title="Surface en hectares à utiliser pour la simulation"/>
+        </div>
+        <div class="form-group">
+          <label for="sim-years">Horizon temporel (Années)</label>
+          <input type="number" id="sim-years" value="10" min="5" max="30" required title="Nombre d'années pour la projection de l'impact"/>
+        </div>
+        <button type="submit" class="btn" style="width:100%" title="Calculer la réduction d'érosion sur l'horizon temporel">Lancer la simulation (Projet 2037)</button>
+        <div id="sim-result" class="success-box" style="display:none; margin-top:10px; background:#007a98; color:#eaffff; text-align:center;"></div>
+      </form>
+    </div>
+    
+    <details id="graphes" class="card" style="margin-top:12px">
+      <summary><h2 class="h2" style="display:inline">Graphes climatiques & Photos</h2></summary>
+      <div style="padding-top:14px;">
+        <p class="small">Analyse des précipitations, températures et observations terrain.</p>
+        
+        <div id="graphs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px;"></div>
+        
+        <div style="margin-top: 12px;">
+          <h4 class="small">Photos terrain</h4>
+          <div id="photos-grid" class="gallery"></div>
+        </div>
+      </div>
+    </details>
+
+    <details id="download-share" class="card" style="margin-top:12px">
+      <summary><h4 class="small" style="display:inline">Partage & Téléchargements (Open Source)</h4></summary>
+      <div style="padding-top:14px;">
+        <div style="margin-top:10px; display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+          <button id="download-geojson" class="btn" title="Télécharger le périmètre d'étude au format GeoJSON">Télécharger GeoJSON Zone</button>
+          <button id="chat-export" class="btn ghost" title="Sauvegarder l'historique de votre dialogue avec l'assistant">Exporter Dialogue (.txt)</button>
+          <button id="download-climat" class="btn ghost" style="grid-column: span 2;" title="Télécharger les données climatiques simulées pour l'analyse">Télécharger Données Climat (Simulées)</button>
+        </div>
+        <p class="small-muted" style="margin-top:10px; text-align:center;">
+          Projet **Open Source (MIT)**. Conçu par Solution Express — MOUTSOU Jaurès.
+        </p>
+      </div>
+    </details>
+  </aside>
+</div>
+
+<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog">
+  <div style="text-align:center">
+    <button id="lb-close" class="lb-btn" style="position:absolute;right:24px;top:18px" title="Fermer la fenêtre d'agrandissement">✕</button>
+    <img id="lb-image" class="lb-img" src="" alt="Agrandissement"/>
+    <div id="lb-meta" class="lb-meta small-muted"></div>
+  </div>
+</div>
+
+<footer style="max-width:var(--maxw);margin:18px auto;padding:10px;color:var(--muted);text-align:center;font-size:12px"> <!-- RÉDUIT -->
+  © 2025 REAL VIZUALISATION — Solution Express • MOUTSOU Jaurès — Open Source (MIT)
+</footer>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="config.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
