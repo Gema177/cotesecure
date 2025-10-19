@@ -7,6 +7,14 @@ const GPT_CONFIG = window.API_CONFIG?.openai || {
     model: 'gpt-3.5-turbo', // Modèle OpenAI
     baseUrl: 'https://api.openai.com/v1/chat/completions'
 };
+/ Debug pour vérifier la configuration
+console.log('🔍 Configuration API:', {
+    hasWindowConfig: !!window.API_CONFIG,
+    apiKeyLength: GPT_CONFIG.apiKey?.length || 0,
+    apiKeyStart: GPT_CONFIG.apiKey?.substring(0, 10) + '...',
+    model: GPT_CONFIG.model
+});
+
 
 // Configuration sécurisée :
 // 1. Pour le développement local : ajoutez votre clé API dans la ligne ci-dessus
