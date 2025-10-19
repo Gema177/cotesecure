@@ -3,7 +3,7 @@
    ============================ */
 // Configuration de l'API - utilise config.js si disponible
 const GPT_CONFIG = window.API_CONFIG?.openai || {
-    apiKey: '', // À configurer : ajoutez votre clé API ici
+    apiKey: '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', // À configurer : ajoutez votre clé API ici
     model: 'gpt-3.5-turbo', // Modèle OpenAI
     baseUrl: 'https://api.openai.com/v1/chat/completions'
 };
