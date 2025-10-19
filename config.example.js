@@ -3,7 +3,7 @@
 
 const API_CONFIG = {
     openai: {
-        apiKey: 'VOTRE_CLE_API_ICI', // Remplacez par votre vraie clé API
+        apiKey: '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', // Remplacez par votre vraie clé API
         model: 'gpt-3.5-turbo',
         baseUrl: 'https://api.openai.com/v1/chat/completions'
     }
